@@ -1,0 +1,56 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    crossorigin="anonymous">
+
+</head>
+<body class="container">
+    <h1 class="display-4 text-primary">
+        {{title}}</h1>
+    <p>{{msg}}</p>
+    <p><a href="{% url goto1 %}">{{goto1}}</a></p>
+    <p><a href="{% url goto2 %}">{{goto2}}</a></p>
+    <p><a href="{% url goto3 %}">{{goto3}}</a></p>
+    <h2><a href="{% url 'upload' %}">画像を投稿</a></h2>
+
+    <table class="table">
+        <tr>
+            <th>タイムライン</th>
+        </tr>
+    {% for item in timeline %}
+        <tr>
+            <td>{{item}}</td>
+            <td><a href="{% url 'edit' item.id %}">Edit</a></td>
+            <td><a href="{% url 'delete' item.id %}">Delete</a></td>
+        <tr>
+    {% endfor %}
+    </table>
+
+    <table class="table">
+        <tr>
+            <th>画像</th>
+        </tr>
+    </table>    
+    {% for image in images %}
+        <img src='{{ MEDIA_URL }}{{image.picture}}' width=200>
+        <h2>{{ image.title }}</h2>
+    {% endfor %}   
+     
+
+    <table class="table">
+        <tr>
+            <th>data</th>
+        </tr>
+    {% for item in data %}
+        <tr>
+            <td>{{item}}</td>
+        <tr>
+    {% endfor %}
+    </table>
+</body>
+</html>
