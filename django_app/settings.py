@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-   
+    'hello' ,   #　☆
+    'sns', #追加したもの
     'share' , #　☆
-    
+    'album',
 ]
 
 MIDDLEWARE = [
