@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .models import Image,Friend,Post     #imageちゃんとある
-from .forms import ImageForm, HelloForm,TweetForm
+from .forms import ImageForm, FriendForm,PostForm
 
 def index(request):
     images = Image.objects.all()
@@ -38,7 +38,7 @@ def post(request):
         'msg':'投稿画面',
         'goto1':'index',
         'goto2':'mypage',
-        'form': TweetForm(),
+        'form': PostForm(),
     }
     if (request.method == 'POST'):
         content = request.POST['content']
@@ -59,33 +59,30 @@ def mypage(request):
 
 # create model
 def create(request):
-    params = {
-        'title': 'Share/create',
-        'form': HelloForm(),
-    }
     if (request.method == 'POST'):
-        name = request.POST['name']
-        mail = request.POST['mail']
-        gender = 'gender' in request.POST
-        age = int(request.POST['age'])
-        birth = request.POST['birthday']
-        friend = Friend(name=name,mail=mail,gender=gender,\
-                age=age,birthday=birth)
+        obj = Friend()
+        friend = FriendForm(request.POST, instance=obj)
         friend.save()
         return redirect(to='/share')
+    params = {
+        'title': 'Share/create',
+        'form': FriendForm(),
+    }
     return render(request, 'share/create.html', params)    
 
 
 def edit(request, num):
-    obj = Post.objects.get(id=num)      #ここでのobjみたいなのは勝手に名前つけてるだけ？
+    obj = Post.objects.get(id=num)  #ここでのobjみたいなのは勝手に名前つけてるだけ？ 
     if (request.method == 'POST'):
-        post = TweetForm(request.POST, instance=obj) ##models.pyのcontentにしたらいいのかpostにしたらいいのかわからん
+        
+        post = PostForm(request.POST, instance=obj) ##models.pyのcontentにしたらいいのかpostにしたらいいのかわからん
         post.save()
         return redirect(to='/share')
     params = {
         'title': 'share/edit',
+        'msg':'編集画面',
         'id':num,
-        'form': obj(instance=obj),           #対応させる？
+        'form': PostForm(instance=obj),           #対応させる？
     }
     return render(request, 'share/edit.html', params)
 

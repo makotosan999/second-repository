@@ -1,7 +1,13 @@
 from django import forms
 from .models import Image, Friend, Post  ##　imageいれてる
 
-class HelloForm(forms.Form):
+class FriendForm(forms.ModelForm):             
+    class Meta:
+        model = Friend
+        fields = ['name','mail','gender','age','birthday']
+
+
+class HelloForm(forms.Form):                        #これ使ってない
     name = forms.CharField(label='Name', \
         widget=forms.TextInput(attrs={'class':'form-control'}))
     mail = forms.EmailField(label='Email', \
@@ -13,9 +19,10 @@ class HelloForm(forms.Form):
     birthday = forms.DateField(label='Birth', \
         widget=forms.DateInput(attrs={'class':'form-control'}))
 
-class TweetForm(forms.Form):
-    content = forms.CharField(max_length=400, \
-        widget=forms.Textarea(attrs={'class':'form-control', 'rows':2})) 
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['content']
 
 class ImageForm(forms.ModelForm):
     class Meta:
